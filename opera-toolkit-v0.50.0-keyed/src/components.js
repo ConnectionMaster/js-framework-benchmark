@@ -1,12 +1,12 @@
 {
-  const CREATE_ROWS = Symbol('create-rows');
+  const SET_ROWS = Symbol('set-rows');
   const RESET = Symbol('reset');
 
   const reducer = (state, command) => {
     switch (command.type) {
-      case CREATE_ROWS:
+      case SET_ROWS:
         return {
-          rows: command.rows,
+          rows: [...command.rows.map(row => ({...row}))],
         };
       case RESET:
         return {
@@ -18,8 +18,8 @@
   };
 
   reducer.commands = {
-    createRows: rows => ({
-      type: CREATE_ROWS,
+    setRows: rows => ({
+      type: SET_ROWS,
       rows,
     }),
     reset: () => ({

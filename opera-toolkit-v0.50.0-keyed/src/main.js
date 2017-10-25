@@ -199,21 +199,19 @@ class Main {
         startMeasure("run");
         this.store.clear();
         this.store.run();
-        this.table.commands.createRows(this.store.data);
+        this.table.commands.setRows(this.store.data);
         stopMeasure();
     }
     add() {
         startMeasure("add");
         this.store.add();
-        this.appendRows();
+        this.table.commands.setRows(this.store.data);
         stopMeasure();
     }
     update() {
         startMeasure("update");
         this.store.update();
-        for (let i=0;i<this.data.length;i+=10) {
-            this.rows[i].childNodes[1].childNodes[0].innerText = this.store.data[i].label;
-        }
+        this.table.commands.setRows(this.store.data);
         stopMeasure();
     }
     unselect() {
@@ -250,34 +248,11 @@ class Main {
         this.recreateSelection();
         stopMeasure();
     }
-    removeAllRows() {
-        // ~258 msecs
-        // for(let i=this.rows.length-1;i>=0;i--) {
-        //     tbody.removeChild(this.rows[i]);
-        // }
-        // ~251 msecs
-        // for(let i=0;i<this.rows.length;i++) {
-        //     tbody.removeChild(this.rows[i]);
-        // }
-        // ~216 msecs
-        // var cNode = tbody.cloneNode(false);
-        // tbody.parentNode.replaceChild(cNode ,tbody);
-        // ~212 msecs
-        this.tbody.textContent = "";
-
-        // ~236 msecs
-        // var rangeObj = new Range();
-        // rangeObj.selectNodeContents(tbody);
-        // rangeObj.deleteContents();
-        // ~260 msecs
-        // var last;
-        // while (last = tbody.lastChild) tbody.removeChild(last);
-    }
     runLots() {
         startMeasure("runLots");
         this.store.clear();
         this.store.runLots();
-        this.table.commands.createRows(this.store.data);
+        this.table.commands.setRows(this.store.data);
         stopMeasure();
     }
     clear() {
@@ -290,82 +265,11 @@ class Main {
     }    
     swapRows() {
         startMeasure("swapRows");
-        if (this.data.length>10) {
+        if (this.store.data.length>10) {
             this.store.swapRows();
-            this.data[4] = this.store.data[4]; 
-            this.data[9] = this.store.data[9]; 
-
-            this.tbody.insertBefore(this.rows[9], this.rows[5])
-            this.tbody.insertBefore(this.rows[4], this.rows[10])
-
-            let tmp = this.rows[9];
-            this.rows[9] = this.rows[4];
-            this.rows[4] = tmp;
+            this.table.commands.setRows(this.store.data);
         }
-
-
-        // let old_selection = this.store.selected;
-        // this.store.swapRows();
-        // this.updateRows();
-        // this.unselect();
-        // if (old_selection>=0) {
-        //     let idx = this.store.data.findIndex(d => d.id === old_selection);
-        //     if (idx > 0) {
-        //         this.store.select(this.data[idx].id);
-        //         this.selectedRow = this.rows[idx];
-        //         this.selectedRow.className = "danger";
-        //     }
-        // }
         stopMeasure();
-    }
-    appendRows() {
-        // Using a document fragment is slower...
-        // var docfrag = document.createDocumentFragment();
-        // for(let i=this.rows.length;i<this.store.data.length; i++) {
-        //     let tr = this.createRow(this.store.data[i]);
-        //     this.rows[i] = tr;
-        //     this.data[i] = this.store.data[i];
-        //     docfrag.appendChild(tr);
-        // }
-        // this.tbody.appendChild(docfrag);
-
-        // ... than adding directly
-        var rows = this.rows, s_data = this.store.data, data = this.data, tbody = this.tbody;
-        for(let i=rows.length;i<s_data.length; i++) {
-            let tr = this.createRow(s_data[i]);
-            rows[i] = tr;
-            data[i] = s_data[i];
-            tbody.appendChild(tr);
-        }
-    }
-    createRow(data) {
-        let tr = document.createElement("tr");
-        tr.data_id = data.id;
-        let td1 = td("col-md-1");
-        td1.innerText = data.id;
-        tr.appendChild(td1);
-
-        let td2 = td("col-md-4")
-        tr.appendChild(td2);
-        let a2 = document.createElement("a");
-        a2.className = "lbl";
-        td2.appendChild(a2);
-        a2.innerText = data.label;
-
-        let td3 = td("col-md-1");
-        tr.appendChild(td3);
-        let a = document.createElement("a");
-        a.className = "remove";
-        td3.appendChild(a);
-        let span = document.createElement("span");
-        span.className = "glyphicon glyphicon-remove remove";
-        span.setAttribute("aria-hidden","true");
-        a.appendChild(span);
-
-        let td5 = td("col-md-6");
-        tr.appendChild(td5)
-
-        return tr;
     }
 }
 
