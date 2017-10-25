@@ -1,0 +1,27 @@
+{
+  "name": "js-framework-benchmark-opera-toolkit",
+  "version": "0.50.0",
+  "description": "Opera Toolkit",
+  "main": "index.js",
+  "scripts": {
+    "build-dev": "node build.js dev",
+    "build-prod": "node build.js prod"
+  },
+  "keywords": [
+    "opera",
+    "toolkit"
+  ],
+  "author": "Aleksander Świtalski",
+  "license": "MIT",
+  "homepage": "https://github.com/operasoftware/js-framework-benchmark",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/operasoftware/js-framework-benchmark.git"
+  },
+  "devDependencies": {
+    "babel-core": "6.24.1",
+    "babel-loader": "7.0.0",
+    "babel-preset-es2015": "6.24.1",
+    "webpack": "2.5.1"
+  }
+}
