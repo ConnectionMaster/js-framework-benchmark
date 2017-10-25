@@ -40,14 +40,16 @@
     }
 
     getTableBody() {
-      if (this.props.rows.length === 0) {
+      if (!this.props.rows || this.props.rows.length === 0) {
         return null;
       }
       return [
         'tbody',
         ...this.props.rows.map(
             row =>
-                ['tr',
+                ['tr', {
+                  key: row.id,
+                },
                  [
                    'td',
                    {
