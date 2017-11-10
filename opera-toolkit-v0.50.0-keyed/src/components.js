@@ -8,7 +8,7 @@
       case SET_ROWS:
         return {
           ...state,
-          rows: [...command.rows.map(row => ({...row}))],
+          rows: [...command.rows.map(row => ({ id: row.id, label: row.label}))],
           selected: -1,
         };
       case SELECT_ROW:
@@ -47,13 +47,17 @@
     }
 
     getRow(row, index) {
+      let className = null;
+      if (this.props.selected === index) {
+        className = 'danger';
+      }
       return [
         'tr', {
           key: row.id,
           metadata: {
             data_id: row.id,
           },
-          class: this.props.selected === index ? 'danger' : null,
+          class: className,
         },
         [
           'td',
@@ -121,78 +125,5 @@
 
 opr.Toolkit.configure({
   debug: true,
-  level: 'info',
+  level: 'debug',
 });
-
-// render
-// render = row =>
-//     ['tr', {
-//       key: row.id,
-//     },
-//      [
-//        'td',
-//        {
-//          class: 'col-md-1',
-//        },
-//        String(row.id),
-//      ],
-//      [
-//        'td',
-//        {
-//          class: 'col-md-4',
-//        },
-//        [
-//          'a',
-//          {
-//            class: 'lbl',
-//          },
-//          row.label,
-//        ],
-//      ],
-//      [
-//        'td',
-//        {
-//          class: 'col-md-1',
-//        },
-//        [
-//          'a',
-//          {
-//            class: 'remove',
-//          },
-//          [
-//            'span',
-//            {
-//              class: 'glyphicon glyphicon-remove remove',
-//            },
-//          ],
-//        ],
-//      ],
-//      [
-//        'td',
-//        {
-//          class: 'col-md-6',
-//        },
-//      ]]
-
-// console.time('deep equal');
-// for (let i = 0; i < 100000; i++) {
-//   opr.Toolkit.Diff.deepEqual(
-//       render({
-//         id: 10,
-//         label: 'label',
-//       }),
-//       render({
-//         id: 10,
-//         label: 'label',
-//       }));
-// }
-// console.timeEnd('deep equal');
-
-// console.time('describe');
-// for (let i = 0; i < 100000; i++) {
-//   opr.Toolkit.Template.describe(render({
-//     id: 10,
-//     label: 'label',
-//   }));
-// }
-// console.timeEnd('describe');
