@@ -124,6 +124,6 @@
 }
 
 opr.Toolkit.configure({
-  debug: true,
-  level: 'debug',
+  debug: false,
+  level: 'info',
 });
