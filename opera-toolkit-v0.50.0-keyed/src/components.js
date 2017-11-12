@@ -34,6 +34,71 @@
 
   const Row = Symbol.for('table-row');
 
+  class TableRow extends opr.Toolkit.Component {
+
+    render() {
+      let className = null;
+      if (this.props.selected) {
+        className = 'danger';
+      }
+      return [
+        'tr', {
+          key: this.props.id,
+          metadata: {
+            data_id: this.props.id,
+          },
+          class: className,
+        },
+        [
+          'td',
+          {
+            class: 'col-md-1',
+          },
+          String(this.props.id),
+        ],
+        [
+          'td',
+          {
+            class: 'col-md-4',
+          },
+          [
+            'a',
+            {
+              class: 'lbl',
+            },
+            this.props.label,
+          ],
+        ],
+        [
+          'td',
+          {
+            class: 'col-md-1',
+          },
+          [
+            'a',
+            {
+              class: 'remove',
+            },
+            [
+              'span',
+              {
+                class: 'glyphicon glyphicon-remove remove',
+              },
+            ],
+          ],
+        ],
+        [
+          'td',
+          {
+            class: 'col-md-6',
+          },
+        ]
+      ];      
+    }
+  }
+
+  loader.define('table-row', TableRow);
+
   class Table extends opr.Toolkit.Root {
 
     static get defaultProps() {
@@ -114,7 +179,15 @@
         },
         [
           'tbody',
-          ...this.props.rows.map(this.getRow),
+          //...this.props.rows.map(this.getRow),
+          ...this.props.rows.map((row, index) => [
+            Row, {
+              key: row.id,
+              id: row.id,
+              label: row.label,
+              selected: index === this.props.selected,
+            },
+          ])
         ],
       ];
     }
