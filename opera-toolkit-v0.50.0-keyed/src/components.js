@@ -179,15 +179,15 @@
         },
         [
           'tbody',
-          //...this.props.rows.map(this.getRow),
-          ...this.props.rows.map((row, index) => [
-            Row, {
-              key: row.id,
-              id: row.id,
-              label: row.label,
-              selected: index === this.props.selected,
-            },
-          ])
+          ...this.props.rows.map(this.getRow),
+//           ...this.props.rows.map((row, index) => [
+//             Row, {
+//               key: row.id,
+//               id: row.id,
+//               label: row.label,
+//               selected: index === this.props.selected,
+//             },
+//           ])
         ],
       ];
     }
