@@ -8,7 +8,7 @@
       case SET_ROWS:
         return {
           ...state,
-          rows: [...command.rows.map(row => ({ id: row.id, label: row.label}))],
+          rows: [...command.rows.map(row => ({id: row.id, label: row.label}))],
           selected: -1,
         };
       case SELECT_ROW:
@@ -93,7 +93,7 @@
             class: 'col-md-6',
           },
         ]
-      ];      
+      ];
     }
   }
 
@@ -112,16 +112,26 @@
     }
 
     getRow(row, index) {
+      return this.createRow({
+        id: row.id,
+        label: row.label,
+        selected: this.props.selected === index,
+        index,
+      })
+    }
+
+    createRow(data) {
       let className = null;
-      if (this.props.selected === index) {
+      if (data.selected) {
         className = 'danger';
       }
       return [
         'tr', {
-          key: row.id,
+          key: data.id,
           metadata: {
-            data_id: row.id,
+            data_id: data.id,
           },
+          origin: data,
           class: className,
         },
         [
@@ -129,7 +139,7 @@
           {
             class: 'col-md-1',
           },
-          String(row.id),
+          String(data.id),
         ],
         [
           'td',
@@ -141,7 +151,7 @@
             {
               class: 'lbl',
             },
-            row.label,
+            data.label,
           ],
         ],
         [
@@ -178,16 +188,15 @@
           class: 'table table-hover table-striped test-data',
         },
         [
-          'tbody',
-          ...this.props.rows.map(this.getRow),
-//           ...this.props.rows.map((row, index) => [
-//             Row, {
-//               key: row.id,
-//               id: row.id,
-//               label: row.label,
-//               selected: index === this.props.selected,
-//             },
-//           ])
+          'tbody', ...this.props.rows.map(this.getRow),
+          //           ...this.props.rows.map((row, index) => [
+          //             Row, {
+          //               key: row.id,
+          //               id: row.id,
+          //               label: row.label,
+          //               selected: index === this.props.selected,
+          //             },
+          //           ])
         ],
       ];
     }
